@@ -1,13 +1,12 @@
 package com.example.android.inventory;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android.inventory.data.StoreDBHelper;
-import com.example.android.inventory.data.StoreMethods;
 
 import static com.example.android.inventory.data.StoreContract.StoreEntry.TYPE_OTHER;
 import static com.example.android.inventory.data.StoreMethods.addStoreItem;

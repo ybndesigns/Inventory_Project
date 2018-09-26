@@ -4,9 +4,10 @@ import android.provider.BaseColumns;
 
 public final class StoreContract {
 
-    private StoreContract() {}
+    private StoreContract() {
+    }
 
-    public static final class StoreEntry implements BaseColumns{
+    public static final class StoreEntry implements BaseColumns {
 
         public final static String TABLE_NAME = "stock";
 

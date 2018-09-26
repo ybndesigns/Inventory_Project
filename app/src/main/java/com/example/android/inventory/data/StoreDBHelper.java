@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.example.android.inventory.data.StoreContract.*;
+import static com.example.android.inventory.data.StoreContract.StoreEntry;
 
 public class StoreDBHelper extends SQLiteOpenHelper {
 
@@ -36,7 +36,7 @@ public class StoreDBHelper extends SQLiteOpenHelper {
 
         Log.i("SQL Statement: ", SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
-     }
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

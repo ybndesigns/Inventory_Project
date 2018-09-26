@@ -9,18 +9,19 @@ import com.example.android.inventory.data.StoreContract.StoreEntry;
 
 public final class StoreMethods { //A class which holds the two methods to read and write to the database
 
-    private StoreMethods() {}
+    private StoreMethods() {
+    }
 
     /**
      * Method that adds new entries to the stock table. Parameters added so they can be easily used
      * in several activities (for instance, if dummy data needs to be entered in one activity and user input data in another).
      *
-     * @param helper is the iteration of @StoreDBHelper that is being used on the page.
-     * @param name corresponds to the name column in the table
-     * @param type corresponds to the product type
-     * @param price corresponds to price
-     * @param quantity corresponds to quantity
-     * @param supplier corresponds to supplier
+     * @param helper      is the iteration of @StoreDBHelper that is being used on the page.
+     * @param name        corresponds to the name column in the table
+     * @param type        corresponds to the product type
+     * @param price       corresponds to price
+     * @param quantity    corresponds to quantity
+     * @param supplier    corresponds to supplier
      * @param supplierNum corresponds to supplier phone number
      */
     public static void addStoreItem(StoreDBHelper helper, String name, int type, int price, int quantity, String supplier, int supplierNum) {
