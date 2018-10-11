@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="array_type_options">
+        <item>@string/type_other</item>
+        <item>@string/type_hardcover</item>
+        <item>@string/type_paperback</item>
+        <item>@string/type_ebook</item>
+        <item>@string/type_audio</item>
+    </string-array>
+</resources>

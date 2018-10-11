@@ -24,6 +24,8 @@ public class StoreDBHelper extends SQLiteOpenHelper {
         String NOT_NULL = " NOT NULL";
         String DEFAULT_0 = " DEFAULT 0";
 
+        //Creating the SQL table
+
         String SQL_CREATE_ENTRIES =
                 "CREATE TABLE " + StoreEntry.TABLE_NAME + " (" +
                         StoreEntry._ID + INTEGER + " PRIMARY KEY AUTOINCREMENT, " +
@@ -32,7 +34,7 @@ public class StoreDBHelper extends SQLiteOpenHelper {
                         StoreEntry.COLUMN_PRICE + INTEGER + DEFAULT_0 + ", " +
                         StoreEntry.COLUMN_QUANTITY + INTEGER + DEFAULT_0 + ", " +
                         StoreEntry.COLUMN_SUPPLIER + TEXT + ", " +
-                        StoreEntry.COLUMN_SUPPLIER_NUM + INTEGER + ");";
+                        StoreEntry.COLUMN_SUPPLIER_NUM + TEXT + ");";
 
         Log.i("SQL Statement: ", SQL_CREATE_ENTRIES);
         db.execSQL(SQL_CREATE_ENTRIES);
