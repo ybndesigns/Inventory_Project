@@ -32,6 +32,7 @@
     <string name="button_discard">Discard</string>
     <string name="button_keep_editing">Keep Editing</string>
     <string name="order">Order from Supplier</string>
+    <string name="confirm">Confirm</string>
 
     <!--Headers, Categories, and things that need naming-->
     <string name="title_add">Add a Product</string>
@@ -47,5 +48,6 @@
     <string name="phone_number">Phone Number</string>
     <string name="quantity_abv">Qty:</string>
     <string name="required">* Required</string>
+    <string name="amount_sold">Amount Sold</string>
 
 </resources>

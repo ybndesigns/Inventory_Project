@@ -1,14 +1,20 @@
 package com.example.android.inventory;
 
+import android.app.AlertDialog;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
-import android.support.constraint.ConstraintLayout;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.inventory.data.StoreContract.StoreEntry;
 
@@ -17,7 +23,7 @@ import java.text.NumberFormat;
 public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListView
 
     ImageView buyButton;
-    ConstraintLayout infoListview;
+    int mQuantity;
 
     public StockCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -39,12 +45,14 @@ public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListVi
         TextView qtyTextview = view.findViewById(R.id.quantity_textview);
 
         buyButton = view.findViewById(R.id.buy_button);
-        infoListview = view.findViewById(R.id.info_listview);
 
+        final int id = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry._ID));
         String name = cursor.getString(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_NAME));
         Integer type = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_TYPE));
         Integer price = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_PRICE));
         Integer quantity = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_QUANTITY));
+
+        mQuantity = quantity;
 
         nameTextview.setText(name);
 
@@ -74,13 +82,60 @@ public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListVi
         qtyTextview.setText(R.string.quantity_abv);
         qtyTextview.append(" " + quantity);
 
+        //NumberPicker to be used in AlertDialog
+        final NumberPicker numberPicker = new NumberPicker(context);
+        numberPicker.setMinValue(0);
+        numberPicker.setMaxValue(1000);
+        numberPicker.setWrapSelectorWheel(false);
+
+
+        //Preparing AlertDialog for to be called on buyButton click
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.amount_sold);
+        builder.setView(numberPicker);
+        builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sellProduct(context, numberPicker, id);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        buyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.create().show();
+            }
+        });
+
+        //TODO: Add motion event for buyButton
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        //TODO: implement button functionality for buying
+    //The Method that updates and saves the new quantity amount
+    private void sellProduct(Context c, NumberPicker np, int id) {
+        int soldAmount = np.getValue();
 
+        if (soldAmount <= 0) {
+            Toast.makeText(c, "Must sell positive amount", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (soldAmount > mQuantity) {
+            Toast.makeText(c, "Sold amount cannot be larger than quantity in stock", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        return super.getView(position, convertView, parent);
+        int newQuantity = (mQuantity - soldAmount);
+
+        Uri productUri = ContentUris.withAppendedId(StoreEntry.CONTENT_URI, id);
+
+        ContentValues values = new ContentValues();
+        values.put(StoreEntry.COLUMN_QUANTITY, newQuantity);
+        c.getContentResolver().update(productUri, values, null, null);
     }
 }
