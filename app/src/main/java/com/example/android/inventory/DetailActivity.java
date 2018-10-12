@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.telephony.PhoneNumberUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private TextView typeTextView;
     private TextView supplierTextView;
     private TextView supplierNumTextView;
+
+    Button order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +59,16 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
         typeTextView = findViewById(R.id.detail_type);
         supplierTextView = findViewById(R.id.detail_supplier_name);
         supplierNumTextView = findViewById(R.id.detail_supplier_num);
+
+        order = findViewById(R.id.order);
+
+        order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + supplierNumTextView.getText()));
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -182,6 +196,7 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             int supplierNum = data.getColumnIndex(StoreEntry.COLUMN_SUPPLIER_NUM);
             if (data.getInt(supplierNum) == 0) {
                 supplierNumTextView.setText(R.string.number_not_found);
+                order.setEnabled(false);
             } else {
                 String phoneNum = PhoneNumberUtils.formatNumber(data.getString(supplierNum), "US");
                 supplierNumTextView.setText(phoneNum);

@@ -1,36 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minHeight="45dp"
+    android:orientation="horizontal"
     android:padding="16dp">
 
-    <TextView
-        android:id="@+id/name_textview"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/info_listview"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        app:layout_constraintHorizontal_weight="2"
-        tools:text="Harry Potter and the Goblet of Fire" />
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/type_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        app:layout_constraintTop_toBottomOf="@id/name_textview"
-        tools:text="Hardcover" />
+        <TextView
+            android:id="@+id/name_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            app:layout_constraintHorizontal_weight="2"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Harry Potter and the Goblet of Fire" />
 
-    <TextView
-        android:id="@+id/price_textview"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        tools:text="$19.00" />
+        <TextView
+            android:id="@+id/type_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            app:layout_constraintTop_toBottomOf="@id/name_textview"
+            tools:text="Hardcover" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/price_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="$19.00" />
+
+        <TextView
+            android:id="@+id/quantity_textview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toBottomOf="@id/price_textview"
+            tools:text="Qty: 300" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/buy_button"
+        android:layout_width="50dp"
+        android:layout_height="36dp"
+        android:layout_marginLeft="8dp"
+        android:minHeight="26dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_payment_method" />
+
+</LinearLayout>

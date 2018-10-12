@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //TODO: make sure both the button and the listview are clickable
+
                 Intent intent = new Intent(MainActivity.this, DetailActivity.class);
                 Uri currentProductUri = ContentUris.withAppendedId(StoreEntry.CONTENT_URI, id);
                 intent.setData(currentProductUri);
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 StoreEntry._ID,
                 StoreEntry.COLUMN_NAME,
                 StoreEntry.COLUMN_TYPE,
-                StoreEntry.COLUMN_PRICE};
+                StoreEntry.COLUMN_PRICE,
+                StoreEntry.COLUMN_QUANTITY};
 
         return new CursorLoader(
                 this,
@@ -95,4 +98,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     public void onLoaderReset(Loader<Cursor> loader) {
         mAdapter.swapCursor(null);
     }
+
+
 }

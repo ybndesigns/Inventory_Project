@@ -1,31 +1,41 @@
 <resources>
-    <string name="app_name">Inventory</string>
+    <string name="app_name">Bookstore Inventory</string>
     <string name="title_activity_detailed">DetailedActivity</string>
     <string name="action_settings">Settings</string>
 
-
+    <!--Strings for different product types-->
     <string name="type_other">Other or Unknown</string>
     <string name="type_hardcover">Hardcover</string>
     <string name="type_paperback">Paperback</string>
     <string name="type_ebook">eBook</string>
     <string name="type_audio">Audiobook</string>
+
+    <!--Warnings and notices-->
     <string name="discard_changes">Discard your changes and quit editing?</string>
-    <string name="button_discard">Discard</string>
-    <string name="button_keep_editing">Keep Editing</string>
     <string name="error">Error Saving Product</string>
     <string name="success">Product saved</string>
-    <string name="empty_inventory">Inventory currently empty</string>
+    <string name="empty_inventory">Inventory currently empty. Please add an item by tapping the floating button.</string>
+    <string name="delete_dialog_msg">Delete this product from inventory?</string>
+    <string name="delete_success">Product deleted</string>
+    <string name="delete_error">Error deleting product</string>
+    <string name="no_product_found">No Product Found</string>
+    <string name="neg_quantity">Cannot have negative quantity in stock</string>
+    <string name="unknown_supplier">Unknown Supplier</string>
+    <string name="number_not_found">Number not found</string>
+    <string name="empty_entry">Cannot save empty entry</string>
+
+    <!--Buttons-->
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
-    <string name="delete_dialog_msg">Delete this product from inventory?</string>
-    <string name="delete_success">Product deleted</string>
-    <string name="delete_error">Error deleting product</string>
+    <string name="button_discard">Discard</string>
+    <string name="button_keep_editing">Keep Editing</string>
+    <string name="order">Order from Supplier</string>
+
+    <!--Headers, Categories, and things that need naming-->
     <string name="title_add">Add a Product</string>
     <string name="title_edit">Edit Product</string>
-    <string name="no_product_found">No Product Found</string>
-    <string name="neg_quantity">Cannot have negative quantity in stock</string>
     <string name="product_info">Product Information</string>
     <string name="overview">Overview</string>
     <string name="product_name">Product Name</string>
@@ -35,6 +45,7 @@
     <string name="supplier">Supplier</string>
     <string name="name">Name</string>
     <string name="phone_number">Phone Number</string>
-    <string name="unknown_supplier">Unknown Supplier</string>
-    <string name="number_not_found">Number not found</string>
+    <string name="quantity_abv">Qty:</string>
+    <string name="required">* Required</string>
+
 </resources>

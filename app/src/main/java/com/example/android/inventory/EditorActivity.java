@@ -22,8 +22,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventory.data.StoreContract.StoreEntry;
@@ -43,9 +45,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mSupplierNumInput;
     private boolean mFieldChanged = false;
 
+    private Button addQuantity;
+    private Button minusQuantity;
+    private int mQuantity = 0;
+
     private String current = "";
 
-    private TextWatcher tw;
+    private TextWatcher twPrice;
+    private TextWatcher twQuantity;
     //Listening for edited views in order to trigger showUnsavedChangesDialogue
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -83,6 +90,10 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierNumInput = findViewById(R.id.supplier_num_input);
         setupSpinner();
 
+        //Making sure that user knows the overview section is required
+        TextView overviewLabel = findViewById(R.id.overview_label);
+        overviewLabel.append("*");
+
         //Setting OnTouchListener for each interactive section
         mNameInput.setOnTouchListener(mTouchListener);
         mPriceInput.setOnTouchListener(mTouchListener);
@@ -92,8 +103,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSupplierNumInput.setOnTouchListener(mTouchListener);
 
         //Adding TextWatcher to mPriceInput EditText to have it display as local currency
-
-        tw = new TextWatcher() {
+        twPrice = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -124,15 +134,74 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             }
         };
+        mPriceInput.addTextChangedListener(twPrice);
 
-        mPriceInput.addTextChangedListener(tw);
+        //Setting up the buttons to increment the Quantity amount
+        minusQuantity = findViewById(R.id.minusQuantity);
+        addQuantity = findViewById(R.id.addQuantity);
+
+        minusQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mQuantity == 0) {
+                    Toast.makeText(EditorActivity.this, R.string.neg_quantity, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mQuantity -= 1;
+                mQuantityInput.setText(String.valueOf(mQuantity));
+            }
+        });
+
+        addQuantity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mQuantity += 1;
+                mQuantityInput.setText(String.valueOf(mQuantity));
+            }
+        });
+
+        twQuantity = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                mQuantityInput.removeTextChangedListener(this);
+
+                String input = s.toString();
+                if (!input.isEmpty() && Integer.parseInt(input) >= 0) {
+                    mQuantity = Integer.parseInt(input);
+                } else if (!input.isEmpty() && Integer.parseInt(input) < 0) {
+                    Toast.makeText(EditorActivity.this, R.string.neg_quantity, Toast.LENGTH_SHORT).show();
+                    mQuantity = 0;
+                } else {
+                    mQuantity = 0;
+                }
+
+                String quantityString = String.valueOf(mQuantity);
+                mQuantityInput.setText(quantityString);
+                mQuantityInput.setSelection(quantityString.length());
+                mQuantityInput.addTextChangedListener(this);
+            }
+        };
+        mQuantityInput.addTextChangedListener(twQuantity);
     }
 
     //Removing TextWatcher so there is no blank line error
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mPriceInput.removeTextChangedListener(tw);
+        mPriceInput.removeTextChangedListener(twPrice);
+        mQuantityInput.removeTextChangedListener(twQuantity);
     }
 
     //Separate method to do the heavy lifting of setting up Spinner
@@ -184,7 +253,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         switch (item.getItemId()) {
             case R.id.action_save:
                 saveProduct();
-                startActivity(new Intent(this, MainActivity.class));
                 return true;
             case R.id.action_delete_editor:
                 showDeleteConfirmationDialog();
@@ -316,9 +384,26 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 TextUtils.isEmpty(supplierString) &&
                 TextUtils.isEmpty(supplierNumString) &&
                 mType == StoreEntry.TYPE_OTHER) {
+            Toast.makeText(this, R.string.empty_entry, Toast.LENGTH_SHORT).show();
             return;
         }
 
+        //Making sure that name and price have been entered
+        if (TextUtils.isEmpty(nameString) && ((TextUtils.isEmpty(priceString)) || Integer.parseInt(priceString) == 0)) {
+            String err = getText(R.string.product_name) + " and " + getText(R.string.price) + " fields are required";
+            Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(nameString)) {
+            String err = getText(R.string.product_name) + " field is required";
+            Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
+            return;
+        } else if (TextUtils.isEmpty(priceString) || Integer.parseInt(priceString) == 0) {
+            String err = getText(R.string.price) + " field is required";
+            Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        //Saving information to new ContentValues
         ContentValues values = new ContentValues();
         values.put(StoreEntry.COLUMN_NAME, nameString);
         values.put(StoreEntry.COLUMN_PRICE, priceString);
@@ -354,6 +439,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             errorMessage.show();
         }
 
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     //Shortcut in cleaning up user entry
