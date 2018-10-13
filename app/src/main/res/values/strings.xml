@@ -23,8 +23,6 @@
     <string name="unknown_supplier">Unknown Supplier</string>
     <string name="number_not_found">Number not found</string>
     <string name="empty_entry">Cannot save empty entry</string>
-    <string name="pos_amount">Must sell positive amount</string>
-    <string name="larger_than_qty">Sold amount cannot be larger than quantity in stock</string>
 
     <!--Buttons-->
     <string name="edit">Edit</string>
@@ -49,7 +47,7 @@
     <string name="name">Name</string>
     <string name="phone_number">Phone Number</string>
     <string name="quantity_abv">Qty:</string>
-    <string name="required">* Required</string>
+    <string name="required">All Fields Required</string>
     <string name="amount_sold">Amount Sold</string>
 
 </resources>

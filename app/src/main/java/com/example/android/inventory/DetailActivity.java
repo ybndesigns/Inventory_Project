@@ -2,6 +2,7 @@ package com.example.android.inventory;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
+import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,10 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
     private TextView supplierNumTextView;
 
     Button order;
+    ImageView detailAdd;
+    ImageView detailRemove;
+
+    int mQuantity = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,35 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + supplierNumTextView.getText()));
                 startActivity(intent);
+            }
+        });
+
+        detailAdd = findViewById(R.id.detail_add);
+        detailAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int newQuantity = mQuantity + 1;
+
+                ContentValues values = new ContentValues();
+                values.put(StoreEntry.COLUMN_QUANTITY, newQuantity);
+                DetailActivity.this.getContentResolver().update(mCurrentProductUri, values, null, null);
+            }
+        });
+
+        detailRemove = findViewById(R.id.detail_remove);
+        detailRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mQuantity <= 0) {
+                    Toast.makeText(DetailActivity.this, R.string.neg_quantity, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                int newQuantity = mQuantity - 1;
+
+                ContentValues values = new ContentValues();
+                values.put(StoreEntry.COLUMN_QUANTITY, newQuantity);
+                DetailActivity.this.getContentResolver().update(mCurrentProductUri, values, null, null);
             }
         });
     }
@@ -184,7 +219,8 @@ public class DetailActivity extends AppCompatActivity implements LoaderManager.L
             }
 
             int quantity = data.getColumnIndex(StoreEntry.COLUMN_QUANTITY);
-            quantityTextView.setText(Integer.toString(data.getInt(quantity)));
+            mQuantity = data.getInt(quantity);
+            quantityTextView.setText(Integer.toString(mQuantity));
 
             int supplier = data.getColumnIndex(StoreEntry.COLUMN_SUPPLIER);
             if (data.getString(supplier).isEmpty()) {

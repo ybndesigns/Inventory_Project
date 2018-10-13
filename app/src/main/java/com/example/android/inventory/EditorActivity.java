@@ -25,7 +25,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.inventory.data.StoreContract.StoreEntry;
@@ -89,10 +88,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         //Finding and setting up spinner for Product Type
         mSupplierNumInput = findViewById(R.id.supplier_num_input);
         setupSpinner();
-
-        //Making sure that user knows the overview section is required
-        TextView overviewLabel = findViewById(R.id.overview_label);
-        overviewLabel.append("*");
 
         //Setting OnTouchListener for each interactive section
         mNameInput.setOnTouchListener(mTouchListener);
@@ -389,16 +384,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         //Making sure that name and price have been entered
-        if (TextUtils.isEmpty(nameString) && ((TextUtils.isEmpty(priceString)) || Integer.parseInt(priceString) == 0)) {
-            String err = getText(R.string.product_name) + " and " + getText(R.string.price) + " fields are required";
-            Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
-            return;
-        } else if (TextUtils.isEmpty(nameString)) {
-            String err = getText(R.string.product_name) + " field is required";
-            Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
-            return;
-        } else if (TextUtils.isEmpty(priceString) || Integer.parseInt(priceString) == 0) {
-            String err = getText(R.string.price) + " field is required";
+        if (TextUtils.isEmpty(nameString) ||
+                ((TextUtils.isEmpty(priceString)) || Integer.parseInt(priceString) == 0) ||
+                TextUtils.isEmpty(quantityString) ||
+                TextUtils.isEmpty(supplierString) ||
+                TextUtils.isEmpty(supplierNumString)) {
+            String err = "All fields are required";
             Toast.makeText(this, err, Toast.LENGTH_SHORT).show();
             return;
         }
