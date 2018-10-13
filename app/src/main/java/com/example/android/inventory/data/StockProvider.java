@@ -204,19 +204,25 @@ public class StockProvider extends ContentProvider {
 
     private void nullCheck(ContentValues values) { //To check if key sections are null
 
-        String name = values.getAsString(StoreEntry.COLUMN_NAME);
-        if (name == null) {
-            throw new IllegalArgumentException("Product requires a name");
+        if (values.containsKey(StoreEntry.COLUMN_NAME)) {
+            String name = values.getAsString(StoreEntry.COLUMN_NAME);
+            if (name == null) {
+                throw new IllegalArgumentException("Product requires a name");
+            }
         }
 
-        Integer type = values.getAsInteger(StoreEntry.COLUMN_TYPE);
-        if (type == null || !StoreEntry.isValidType(type)) {
-            throw new IllegalArgumentException("Product requires valid type");
+        if (values.containsKey(StoreEntry.COLUMN_TYPE)) {
+            Integer type = values.getAsInteger(StoreEntry.COLUMN_TYPE);
+            if (type == null || !StoreEntry.isValidType(type)) {
+                throw new IllegalArgumentException("Product requires valid type");
+            }
         }
 
-        Integer quantity = values.getAsInteger(StoreEntry.COLUMN_QUANTITY);
-        if (quantity != null && quantity < 0) {
-            throw new IllegalArgumentException("Product requires non-negative quantity");
+        if (values.containsKey(StoreEntry.COLUMN_QUANTITY)) {
+            Integer quantity = values.getAsInteger(StoreEntry.COLUMN_QUANTITY);
+            if (quantity != null && quantity < 0) {
+                throw new IllegalArgumentException("Product requires non-negative quantity");
+            }
         }
     }
 }

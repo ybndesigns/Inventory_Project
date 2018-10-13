@@ -50,9 +50,7 @@ public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListVi
         String name = cursor.getString(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_NAME));
         Integer type = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_TYPE));
         Integer price = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_PRICE));
-        Integer quantity = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_QUANTITY));
-
-        mQuantity = quantity;
+        final Integer quantity = cursor.getInt(cursor.getColumnIndexOrThrow(StoreEntry.COLUMN_QUANTITY));
 
         nameTextview.setText(name);
 
@@ -96,6 +94,7 @@ public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListVi
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mQuantity = quantity;
                 sellProduct(context, numberPicker, id);
             }
         });
@@ -114,8 +113,6 @@ public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListVi
                 builder.create().show();
             }
         });
-
-        //TODO: Add motion event for buyButton
     }
 
     //The Method that updates and saves the new quantity amount
@@ -123,10 +120,10 @@ public class StockCursorAdapter extends CursorAdapter { //Adapter for the ListVi
         int soldAmount = np.getValue();
 
         if (soldAmount <= 0) {
-            Toast.makeText(c, "Must sell positive amount", Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, R.string.pos_amount, Toast.LENGTH_SHORT).show();
             return;
         } else if (soldAmount > mQuantity) {
-            Toast.makeText(c, "Sold amount cannot be larger than quantity in stock", Toast.LENGTH_SHORT).show();
+            Toast.makeText(c, R.string.larger_than_qty, Toast.LENGTH_SHORT).show();
             return;
         }
 

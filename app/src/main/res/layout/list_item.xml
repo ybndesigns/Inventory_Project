@@ -61,6 +61,7 @@
         android:layout_marginLeft="8dp"
         android:minHeight="26dp"
         android:scaleType="fitCenter"
+        android:background="?android:selectableItemBackground"
         android:src="@drawable/ic_payment_method" />
 
 </LinearLayout>
